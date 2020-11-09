@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sprite_1.png-41dddfc4c0d555f70bb8ad0a84f91c5d.stex"
+path="res://.import/Astronout.png-c287e99c1da16ab17b43d8332ab4608a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Player/sprite_1.png"
-dest_files=[ "res://.import/sprite_1.png-41dddfc4c0d555f70bb8ad0a84f91c5d.stex" ]
+source_file="res://Sprites/Player/Astronout.png"
+dest_files=[ "res://.import/Astronout.png-c287e99c1da16ab17b43d8332ab4608a.stex" ]
 
 [params]
 
