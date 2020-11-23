@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Healthbar_boarder.png-076717e8c7555c06d92d24a048f1dc40.stex"
+path="res://.import/Healthbar_fill.png-0a35aa657213893b1a3bae739c861f89.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/UI/Healthbar/Healthbar_boarder.png"
-dest_files=[ "res://.import/Healthbar_boarder.png-076717e8c7555c06d92d24a048f1dc40.stex" ]
+source_file="res://Sprites/UI/Bars/Healthbar_fill.png"
+dest_files=[ "res://.import/Healthbar_fill.png-0a35aa657213893b1a3bae739c861f89.stex" ]
 
 [params]
 
