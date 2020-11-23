@@ -4,6 +4,7 @@ const ACCELERATION = 90
 const MAX_SPEED = 80
 const WEIGHT = 100
 const FRICTION = 0.1
+const BOUNC = 0.5
 
 var gravity = 100
 var jet_pack_force = 150
@@ -42,8 +43,11 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, velocity.x + (input_vector.x * ACCELERATION), FRICTION)
 		velocity.x = lerp(velocity.x, 0.0, FRICTION)
 	
+	var bounc = velocity.x
 	velocity = move_and_slide(velocity, Vector2.UP)
-					
+	
+	if velocity.x == 0:
+		velocity.x = -lerp(bounc, 0.0, BOUNC)
 	
 	
 	if old_velocity_y != NAN && \
