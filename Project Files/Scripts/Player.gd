@@ -15,6 +15,8 @@ onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 
+var stats = PlayerStats
+var old_velocity_y = NAN
 
 func _process(delta):
 	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -41,4 +43,15 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, 0.0, FRICTION)
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
+					
+	
+	
+	if old_velocity_y != NAN && \
+		(old_velocity_y - velocity.y) > 100:
+		print("damage")
+		print(old_velocity_y - velocity.y)
+		var damag = (old_velocity_y - velocity.y) - 100
+		stats.take_damage(clamp(damag/100, 0, 1))
+	
+	old_velocity_y = velocity.y
 	

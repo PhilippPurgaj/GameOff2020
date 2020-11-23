@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Sprites/Tiles/Moon.tres" type="TileSet" id=2]
+[ext_resource path="res://Scenes/HUDHealthbar.tscn" type="PackedScene" id=3]
 
 [node name="Main" type="Node2D"]
 
@@ -16,3 +17,9 @@ position = Vector2( 160, 85 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
+
+[node name="HealthbarUI" parent="Player/Camera2D" instance=ExtResource( 3 )]
+margin_left = -155.786
+margin_top = -115.948
+margin_right = -115.786
+margin_bottom = -75.9477
