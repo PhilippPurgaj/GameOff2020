@@ -31,10 +31,15 @@ func _process(delta):
 		elif input_vector.x < 0 && input_vector.y == 0:
 			animationPlayer.play("RunLeft")
 		elif input_vector.y == -1:
-			if "Right" in animationPlayer.current_animation:
+			if input_vector.x > 0:			
 				animationPlayer.play("RightFly")	
-			else:
+			elif input_vector.x < 0:
 				animationPlayer.play("LeftFly")			
+			else:
+				if "Right" in animationPlayer.current_animation:
+					animationPlayer.play("RightFly")	
+				else:
+					animationPlayer.play("LeftFly")		
 	else:
 		if "Right" in animationPlayer.current_animation:
 			animationPlayer.play("IdleRight")
