@@ -1,7 +1,7 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/Player/Astronout.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Player/Astronout_2.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.17902
@@ -42,7 +42,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-length = 0.8
+resource_name = "LeftFly"
+length = 0.4
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -51,14 +52,47 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 7 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "RightFly"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 6 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 1.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8, 1.2 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 3, 4, 5, 4 ]
 }
 
-[sub_resource type="Animation" id=5]
-length = 0.8
+[sub_resource type="Animation" id=7]
+length = 1.6
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -67,71 +101,11 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"times": PoolRealArray( 0, 0.4, 0.8, 1.2 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 1 ]
 }
-
-[sub_resource type="AnimationNodeAnimation" id=6]
-animation = "IdleLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=7]
-animation = "IdleRight"
-
-[sub_resource type="AnimationNodeAnimation" id=8]
-animation = "IdleRight"
-
-[sub_resource type="AnimationNodeAnimation" id=9]
-animation = "IdleLeft"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id=10]
-blend_point_0/node = SubResource( 6 )
-blend_point_0/pos = Vector2( -1, 1 )
-blend_point_1/node = SubResource( 7 )
-blend_point_1/pos = Vector2( 1, -1 )
-blend_point_2/node = SubResource( 8 )
-blend_point_2/pos = Vector2( 1, 1 )
-blend_point_3/node = SubResource( 9 )
-blend_point_3/pos = Vector2( -1, -1 )
-blend_mode = 1
-
-[sub_resource type="AnimationNodeAnimation" id=11]
-animation = "RunRight"
-
-[sub_resource type="AnimationNodeAnimation" id=12]
-animation = "RunLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=13]
-animation = "RunRight"
-
-[sub_resource type="AnimationNodeAnimation" id=14]
-animation = "RunLeft"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id=15]
-blend_point_0/node = SubResource( 11 )
-blend_point_0/pos = Vector2( 1, -1 )
-blend_point_1/node = SubResource( 12 )
-blend_point_1/pos = Vector2( -1, -1 )
-blend_point_2/node = SubResource( 13 )
-blend_point_2/pos = Vector2( 1, 1 )
-blend_point_3/node = SubResource( 14 )
-blend_point_3/pos = Vector2( -1, 1 )
-blend_mode = 1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=16]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=17]
-
-[sub_resource type="AnimationNodeStateMachine" id=18]
-states/Idle/node = SubResource( 10 )
-states/Idle/position = Vector2( 438, 111 )
-states/Run/node = SubResource( 15 )
-states/Run/position = Vector2( 693, 112 )
-transitions = [ "Idle", "Run", SubResource( 16 ), "Run", "Idle", SubResource( 17 ) ]
-start_node = "Idle"
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=19]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -141,9 +115,8 @@ __meta__ = {
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-vframes = 3
-hframes = 2
-frame = 1
+hframes = 8
+frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.148682, 0.445953 )
@@ -152,13 +125,7 @@ shape = SubResource( 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/IdleLeft = SubResource( 2 )
 anims/IdleRight = SubResource( 3 )
-anims/RunLeft = SubResource( 4 )
-anims/RunRight = SubResource( 5 )
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 18 )
-anim_player = NodePath("../AnimationPlayer")
-active = true
-parameters/playback = SubResource( 19 )
-parameters/Idle/blend_position = Vector2( 0.0803709, -0.353448 )
-parameters/Run/blend_position = Vector2( 0, 0 )
+anims/LeftFly = SubResource( 4 )
+anims/RightFly = SubResource( 5 )
+anims/RunLeft = SubResource( 6 )
+anims/RunRight = SubResource( 7 )

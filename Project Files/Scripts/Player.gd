@@ -13,8 +13,6 @@ var input_vector = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 onready var animationPlayer = $AnimationPlayer
-onready var animationTree = $AnimationTree
-onready var animationState = animationTree.get("parameters/playback")
 
 var stats = PlayerStats
 var old_velocity_y = NAN
@@ -28,11 +26,20 @@ func _process(delta):
 		input_vector.y = 0
 	
 	if input_vector != Vector2.ZERO:
-		animationTree.set("parameters/Idle/blend_position", input_vector)
-		animationTree.set("parameters/Run/blend_position", input_vector)
-		animationState.travel("Run")
+		if input_vector.x > 0 && input_vector.y == 0:
+			animationPlayer.play("RunRight")
+		elif input_vector.x < 0 && input_vector.y == 0:
+			animationPlayer.play("RunLeft")
+		elif input_vector.y == -1:
+			if "Right" in animationPlayer.current_animation:
+				animationPlayer.play("RightFly")	
+			else:
+				animationPlayer.play("LeftFly")			
 	else:
-		animationState.travel("Idle")
+		if "Right" in animationPlayer.current_animation:
+			animationPlayer.play("IdleRight")
+		else:
+			animationPlayer.play("IdleLeft")
 	
 
 func _physics_process(delta):
