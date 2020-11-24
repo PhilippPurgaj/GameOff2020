@@ -5,6 +5,7 @@ const MAX_SPEED = 80
 const WEIGHT = 100
 const FRICTION = 0.1
 const BOUNC = 0.5
+const FUEL_PER_S = 0.10
 
 var gravity = 100
 var jet_pack_force = 150
@@ -13,6 +14,8 @@ var input_vector = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 onready var animationPlayer = $AnimationPlayer
+onready var blinkAnimation = $BlinkAnimation
+onready var blinkTimer : Timer = $BlinkTimer
 
 var stats = PlayerStats
 var old_velocity_y = NAN
@@ -20,8 +23,10 @@ var old_velocity_y = NAN
 func _process(delta):
 	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	
-	if Input.is_action_pressed("jump"):
+	if Input.is_action_pressed("jump") and \
+		stats.jetPack_percent > 0:		
 		input_vector.y = -1
+		stats.set_jetPack(stats.jetPack_percent - FUEL_PER_S * delta)
 	else:
 		input_vector.y = 0
 	
@@ -45,7 +50,7 @@ func _process(delta):
 			animationPlayer.play("IdleRight")
 		else:
 			animationPlayer.play("IdleLeft")
-	
+
 
 func _physics_process(delta):
 	velocity.y += input_vector.y * jet_pack_force * delta
@@ -61,13 +66,14 @@ func _physics_process(delta):
 	if velocity.x == 0:
 		velocity.x = -lerp(bounc, 0.0, BOUNC)
 	
-	
-	if old_velocity_y != NAN && \
+	if old_velocity_y != NAN and \
 		(old_velocity_y - velocity.y) > 100:
-		print("damage")
-		print(old_velocity_y - velocity.y)
 		var damag = (old_velocity_y - velocity.y) - 100
 		stats.take_damage(clamp(damag/100, 0, 1))
+		blinkAnimation.play("Start")
+		blinkTimer.start(0.3)
 	
 	old_velocity_y = velocity.y
-	
+
+func _on_BlinkTimer_timeout():
+	blinkAnimation.play("Stop")

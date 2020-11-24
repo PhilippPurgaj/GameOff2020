@@ -1,7 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
-[ext_resource path="res://Sprites/Player/Astronout_2.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Player/Astronout.png" type="Texture" id=2]
+[ext_resource path="res://WhiteColor.shader" type="Shader" id=3]
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = ExtResource( 3 )
+shader_param/active = false
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 4.17902
@@ -52,10 +57,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 7 ]
+"values": [ 8, 9 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -69,10 +74,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 6 ]
+"values": [ 6, 7 ]
 }
 
 [sub_resource type="Animation" id=6]
@@ -107,6 +112,39 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 1 ]
 }
 
+[sub_resource type="Animation" id=9]
+resource_name = "Start"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "Stop"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 __meta__ = {
@@ -114,9 +152,10 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 8 )
 texture = ExtResource( 2 )
-hframes = 8
-frame = 6
+hframes = 10
+frame = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.148682, 0.445953 )
@@ -129,3 +168,11 @@ anims/LeftFly = SubResource( 4 )
 anims/RightFly = SubResource( 5 )
 anims/RunLeft = SubResource( 6 )
 anims/RunRight = SubResource( 7 )
+
+[node name="BlinkAnimation" type="AnimationPlayer" parent="."]
+anims/Start = SubResource( 9 )
+anims/Stop = SubResource( 10 )
+
+[node name="BlinkTimer" type="Timer" parent="."]
+wait_time = 0.2
+[connection signal="timeout" from="BlinkTimer" to="." method="_on_BlinkTimer_timeout"]
