@@ -1,19 +1,17 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Player/Astronout.png" type="Texture" id=2]
 [ext_resource path="res://WhiteColor.shader" type="Shader" id=3]
 
-[sub_resource type="ShaderMaterial" id=8]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 3 )
 shader_param/active = false
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 4.17902
-height = 8.70419
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 4, 8 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "IdleLeft"
+[sub_resource type="Animation" id=3]
 length = 0.1
 loop = true
 tracks/0/type = "value"
@@ -29,8 +27,7 @@ tracks/0/keys = {
 "values": [ 4 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "IdleRight"
+[sub_resource type="Animation" id=4]
 length = 0.1
 loop = true
 tracks/0/type = "value"
@@ -46,8 +43,7 @@ tracks/0/keys = {
 "values": [ 1 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "LeftFly"
+[sub_resource type="Animation" id=5]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -63,8 +59,7 @@ tracks/0/keys = {
 "values": [ 8, 9 ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "RightFly"
+[sub_resource type="Animation" id=6]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -80,8 +75,8 @@ tracks/0/keys = {
 "values": [ 6, 7 ]
 }
 
-[sub_resource type="Animation" id=6]
-length = 1.6
+[sub_resource type="Animation" id=7]
+length = 0.8
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -90,14 +85,14 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4, 0.8, 1.2 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 3, 4, 5, 4 ]
 }
 
-[sub_resource type="Animation" id=7]
-length = 1.6
+[sub_resource type="Animation" id=8]
+length = 0.8
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -106,7 +101,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4, 0.8, 1.2 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 1 ]
@@ -145,6 +140,10 @@ tracks/0/keys = {
 "values": [ false ]
 }
 
+[sub_resource type="CapsuleShape2D" id=11]
+radius = 2.79438
+height = 12.2059
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 __meta__ = {
@@ -152,22 +151,22 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 8 )
+material = SubResource( 1 )
 texture = ExtResource( 2 )
 hframes = 10
-frame = 7
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.148682, 0.445953 )
-shape = SubResource( 1 )
+shape = SubResource( 12 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/IdleLeft = SubResource( 2 )
-anims/IdleRight = SubResource( 3 )
-anims/LeftFly = SubResource( 4 )
-anims/RightFly = SubResource( 5 )
-anims/RunLeft = SubResource( 6 )
-anims/RunRight = SubResource( 7 )
+autoplay = "IdleRight"
+anims/IdleLeft = SubResource( 3 )
+anims/IdleRight = SubResource( 4 )
+anims/LeftFly = SubResource( 5 )
+anims/RightFly = SubResource( 6 )
+anims/RunLeft = SubResource( 7 )
+anims/RunRight = SubResource( 8 )
 
 [node name="BlinkAnimation" type="AnimationPlayer" parent="."]
 anims/Start = SubResource( 9 )
@@ -175,4 +174,12 @@ anims/Stop = SubResource( 10 )
 
 [node name="BlinkTimer" type="Timer" parent="."]
 wait_time = 0.2
+
+[node name="ItemPickUpDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ItemPickUpDetector"]
+shape = SubResource( 11 )
 [connection signal="timeout" from="BlinkTimer" to="." method="_on_BlinkTimer_timeout"]
+[connection signal="area_entered" from="ItemPickUpDetector" to="." method="_on_Area2D_area_entered"]

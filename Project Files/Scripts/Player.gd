@@ -6,6 +6,7 @@ const WEIGHT = 100
 const FRICTION = 0.1
 const BOUNC = 0.5
 const FUEL_PER_S = 0.10
+const FUEL = 0.33
 
 var gravity = 100
 var jet_pack_force = 150
@@ -19,6 +20,10 @@ onready var blinkTimer : Timer = $BlinkTimer
 
 var stats = PlayerStats
 var old_velocity_y = NAN
+
+func _ready():
+	PlayerStats.set_jetPack(1.0)
+	PlayerStats.set_health(1.0)
 
 func _process(delta):
 	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -50,6 +55,10 @@ func _process(delta):
 			animationPlayer.play("IdleRight")
 		else:
 			animationPlayer.play("IdleLeft")
+			
+	if Input.is_action_pressed("reset"):
+		get_tree().reload_current_scene()
+	
 
 
 func _physics_process(delta):
@@ -70,6 +79,8 @@ func _physics_process(delta):
 		(old_velocity_y - velocity.y) > 100:
 		var damag = (old_velocity_y - velocity.y) - 100
 		stats.take_damage(clamp(damag/100, 0, 1))
+		if stats.health_percent == 0:
+			get_tree().reload_current_scene()
 		blinkAnimation.play("Start")
 		blinkTimer.start(0.3)
 	
@@ -77,3 +88,9 @@ func _physics_process(delta):
 
 func _on_BlinkTimer_timeout():
 	blinkAnimation.play("Stop")
+
+
+func _on_Area2D_area_entered(area):
+	area.queue_free()
+	stats.set_jetPack(stats.jetPack_percent + FUEL)
+	pass # Replace with function body.
